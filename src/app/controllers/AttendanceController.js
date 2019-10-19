@@ -172,6 +172,13 @@ class AttendanceController {
             },
           },
           order: [['date', 'ASC']],
+          include: [
+            {
+              model: User,
+              required: true,
+              attributes: ['name'],
+            },
+          ],
         },
       ],
       attributes: ['user_id'],
