@@ -32,6 +32,7 @@ routes.delete('/meetups/:id', MeetupController.delete);
 
 routes.post('/attendances', AttendanceController.store);
 routes.get('/attendances', AttendanceController.index);
+routes.delete('/attendances/:id', AttendanceController.delete);
 
 routes.get('/schedule', ScheduleController.index);
 

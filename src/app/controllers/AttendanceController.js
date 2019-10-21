@@ -5,6 +5,7 @@ import { isBefore } from 'date-fns';
 import Attendance from '../models/Attendance';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
+import File from '../models/File';
 
 import AttendeeMail from '../jobs/AttendeeMail';
 import Queue from '../../lib/Queue';
@@ -178,13 +179,45 @@ class AttendanceController {
               required: true,
               attributes: ['name'],
             },
+            {
+              model: File,
+              required: true,
+              attributes: ['path', 'url'],
+            },
           ],
         },
       ],
-      attributes: ['user_id'],
+      attributes: ['id', 'user_id'],
     });
 
     return response.json(attendances);
+  }
+
+  async delete(request, response) {
+    const { id } = request.params;
+
+    /**
+     * Check if attendance exists and if user is the attender
+     */
+
+    const attendance = await Attendance.findOne({
+      where: {
+        id,
+        user_id: request.userId,
+      },
+    });
+
+    if (!attendance) {
+      return response
+        .status(400)
+        .json({ error: 'This user is not attending this Meetup' });
+    }
+
+    await attendance.destroy();
+
+    return response.json({
+      message: 'Attendance has been cancelled',
+    });
   }
 }
 
