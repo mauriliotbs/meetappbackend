@@ -172,7 +172,6 @@ class AttendanceController {
               [Op.gt]: new Date(),
             },
           },
-          order: [['date', 'ASC']],
           include: [
             {
               model: User,
@@ -187,6 +186,7 @@ class AttendanceController {
           ],
         },
       ],
+      order: [[Meetup, 'date']],
       attributes: ['id', 'user_id'],
     });
 
