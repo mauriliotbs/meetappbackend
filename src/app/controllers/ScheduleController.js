@@ -5,6 +5,7 @@ import { parseISO, startOfDay, endOfDay } from 'date-fns';
 import User from '../models/User';
 import Meetup from '../models/Meetup';
 import File from '../models/File';
+import Attendance from '../models/Attendance';
 
 class ScheduleController {
   async index(request, response) {
@@ -45,6 +46,10 @@ class ScheduleController {
           model: File,
           required: true,
           attributes: ['path', 'url'],
+        },
+        {
+          model: Attendance,
+          attributes: ['user_id'],
         },
       ],
       offset: (page - 1) * 10,
