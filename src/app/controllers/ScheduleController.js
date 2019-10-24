@@ -30,7 +30,7 @@ class ScheduleController {
     const meetupStartDay = startOfDay(date);
     const meetupEndDay = endOfDay(date);
 
-    const schedules = await Meetup.findAll({
+    const schedules = await Meetup.findAndCountAll({
       where: {
         date: {
           [Op.between]: [meetupStartDay, meetupEndDay],
@@ -57,7 +57,9 @@ class ScheduleController {
       order: [['date', 'ASC']],
     });
 
-    return response.json(schedules);
+    response.set('Total-Meetups', schedules.count);
+
+    return response.json(schedules.rows);
   }
 }
 
